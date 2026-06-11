@@ -1,0 +1,367 @@
+﻿'use client';
+import Link from 'next/link';
+import AnimateOnScroll from '@/components/AnimateOnScroll';
+import { GraduationCap, Monitor, Building, DollarSign, Phone, Award, Clock, BookOpen } from '@/components/Icon';
+
+const features = [
+  { icon: <GraduationCap size={28} />, title: 'UGC Approved Programs', desc: 'All programs are UGC-DEB approved and equivalent to regular degrees, valid for government jobs and higher studies.' },
+  { icon: <Monitor size={28} />, title: 'Flexible Learning', desc: 'Study anywhere, anytime on any device. No fixed class schedules — learn at your own pace.' },
+  { icon: <Building size={28} />, title: '14+ Partner Universities', desc: 'Choose from top NAAC-accredited universities including Amity, Manipal, GLA, Jain, and more.' },
+  { icon: <DollarSign size={28} />, title: 'Affordable Fees', desc: 'Programs starting from Rs.10,000. EMI options and scholarships available for eligible students.' },
+  { icon: <Phone size={28} />, title: 'Expert Guidance', desc: 'Our counselors help you choose the right program and university based on your career goals.' },
+  { icon: <Award size={28} />, title: 'Proven Results', desc: '73% of graduates report career advancement within 2 years of completing their online degree.' },
+];
+
+const advantages = [
+  { icon: <Clock size={28} />, title: 'Flexibility and Convenience', desc: 'Study at your own pace, anytime, anywhere, and balance your studies with your work and personal life.' },
+  { icon: <DollarSign size={28} />, title: 'Cost Effectiveness', desc: 'Online programs can be more affordable compared to traditional on-campus programs.' },
+  { icon: <BookOpen size={28} />, title: 'Wide Range of Programs', desc: 'Choose from a variety of undergraduate and postgraduate degree programs across diverse fields.' },
+  { icon: <Monitor size={28} />, title: 'Online Exam', desc: 'You can choose your space to write the exam. No worry about centre, travel, or location.' },
+];
+
+export default function HomePage() {
+  return (
+    <div style={{ fontFamily: '"Inter", system-ui, sans-serif' }}>
+
+      {/* -- HERO -- */}
+      <section style={{
+        background: 'linear-gradient(135deg, #0051ba 0%, #003d8f 60%, #002d6b 100%)',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '100px 2rem 60px',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        {/* Background blobs */}
+        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+          <div style={{ position: 'absolute', top: '10%', left: '-5%', width: '400px', height: '400px', background: 'rgba(255,255,255,0.04)', borderRadius: '50%', filter: 'blur(60px)' }} />
+          <div style={{ position: 'absolute', bottom: '5%', right: '-5%', width: '350px', height: '350px', background: 'rgba(255,255,255,0.03)', borderRadius: '50%', filter: 'blur(50px)' }} />
+        </div>
+
+        <div style={{ maxWidth: '1280px', margin: '0 auto', width: '100%', position: 'relative', zIndex: 1 }}>
+          <div className="hero-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
+
+            {/* LEFT */}
+            <div>
+              <AnimateOnScroll animation="fadeUp">
+                <div style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '8px',
+                  background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.2)',
+                  borderRadius: '50px', padding: '8px 18px', marginBottom: '2rem',
+                  color: '#fff', fontSize: '0.9rem', fontWeight: 600
+                }}>
+                  ? India&apos;s #1 Online Education Platform
+                </div>
+              </AnimateOnScroll>
+
+              <AnimateOnScroll animation="fadeUp" delay={100}>
+                <h1 style={{ fontSize: 'clamp(2.5rem, 5vw, 3.8rem)', fontWeight: 900, lineHeight: 1.15, color: '#fff', marginBottom: '1.5rem' }}>
+                  Transform Your<br />
+                  Career with{' '}
+                  <span style={{ color: '#60a5fa' }}>Online<br />Degrees</span>
+                </h1>
+              </AnimateOnScroll>
+
+              <AnimateOnScroll animation="fadeUp" delay={200}>
+                <p style={{ color: 'rgba(255,255,255,0.82)', fontSize: '1.1rem', lineHeight: 1.7, marginBottom: '1rem', maxWidth: '480px' }}>
+                  Get UGC-approved degrees from India&apos;s top universities. Study at your own pace, from anywhere in the world.
+                </p>
+                <p style={{ color: '#93c5fd', fontSize: '1rem', fontStyle: 'italic', marginBottom: '2.5rem', fontWeight: 500 }}>
+                  learn.&nbsp;&nbsp;grow.&nbsp;&nbsp;succeed.
+                </p>
+              </AnimateOnScroll>
+
+              <AnimateOnScroll animation="fadeUp" delay={300}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+                  <Link href="/programs" style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '8px',
+                    background: '#fff', color: '#0051ba',
+                    padding: '14px 28px', borderRadius: '10px',
+                    fontWeight: 700, fontSize: '1rem', textDecoration: 'none',
+                    boxShadow: '0 8px 24px rgba(0,0,0,0.2)', transition: 'all 0.3s'
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,0,0,0.25)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.2)'; }}>
+                    ?? Explore Programs
+                  </Link>
+                  <button
+                    onClick={() => { const b = document.querySelector('.cf-floating-btn') as HTMLButtonElement; if (b) b.click(); }}
+                    style={{
+                      display: 'inline-flex', alignItems: 'center', gap: '8px',
+                      background: 'rgba(255,255,255,0.12)', color: '#fff',
+                      padding: '14px 28px', borderRadius: '10px',
+                      fontWeight: 700, fontSize: '1rem', border: '2px solid rgba(255,255,255,0.3)',
+                      cursor: 'pointer', transition: 'all 0.3s', fontFamily: 'inherit'
+                    }}
+                    onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.2)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; }}>
+                    ? Find My Course
+                  </button>
+                  <Link href="/universities" style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '8px',
+                    background: 'transparent', color: '#fff',
+                    padding: '14px 28px', borderRadius: '10px',
+                    fontWeight: 600, fontSize: '1rem', textDecoration: 'none',
+                    border: '2px solid rgba(255,255,255,0.25)', transition: 'all 0.3s'
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)'; }}>
+                    ?? Universities
+                  </Link>
+                </div>
+              </AnimateOnScroll>
+            </div>
+
+            {/* RIGHT — image collage + stat cards */}
+            <AnimateOnScroll animation="fadeLeft" delay={200}>
+              <div style={{ position: 'relative', height: '480px' }}>
+                {/* Main large image */}
+                <div style={{
+                  position: 'absolute', top: 0, left: '60px', right: 0, bottom: '80px',
+                  borderRadius: '20px', overflow: 'hidden',
+                  boxShadow: '0 20px 60px rgba(0,0,0,0.3)'
+                }}>
+                  <img
+                    src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=700&q=80"
+                    alt="Students studying"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </div>
+                {/* Bottom-left small image */}
+                <div style={{
+                  position: 'absolute', bottom: 0, left: 0, width: '200px', height: '160px',
+                  borderRadius: '16px', overflow: 'hidden',
+                  boxShadow: '0 12px 30px rgba(0,0,0,0.3)',
+                  border: '4px solid #0051ba'
+                }}>
+                  <img
+                    src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=400&q=80"
+                    alt="Graduation"
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                </div>
+                {/* Stat card — top left */}
+                <div style={{
+                  position: 'absolute', top: '20px', left: 0,
+                  background: '#fff', borderRadius: '14px',
+                  padding: '14px 20px', boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+                  display: 'flex', alignItems: 'center', gap: '12px', minWidth: '180px'
+                }}>
+                  <div style={{ width: '40px', height: '40px', background: '#EFF6FF', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>??</div>
+                  <div>
+                    <div style={{ fontSize: '1.4rem', fontWeight: 900, color: '#0051ba', lineHeight: 1 }}>15,000+</div>
+                    <div style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 500 }}>Active Students</div>
+                  </div>
+                </div>
+                {/* Stat card — bottom right */}
+                <div style={{
+                  position: 'absolute', bottom: '90px', right: '-10px',
+                  background: '#fff', borderRadius: '14px',
+                  padding: '14px 20px', boxShadow: '0 8px 24px rgba(0,0,0,0.15)',
+                  display: 'flex', alignItems: 'center', gap: '12px', minWidth: '160px'
+                }}>
+                  <div style={{ width: '40px', height: '40px', background: '#EFF6FF', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1.2rem' }}>??</div>
+                  <div>
+                    <div style={{ fontSize: '1.4rem', fontWeight: 900, color: '#0051ba', lineHeight: 1 }}>95%</div>
+                    <div style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 500 }}>Placement Rate</div>
+                  </div>
+                </div>
+              </div>
+            </AnimateOnScroll>
+          </div>
+
+          {/* Stats bar */}
+          <AnimateOnScroll animation="fadeUp" delay={400}>
+            <div style={{
+              display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
+              gap: '1px', background: 'rgba(255,255,255,0.1)',
+              borderRadius: '16px', overflow: 'hidden', marginTop: '4rem',
+              border: '1px solid rgba(255,255,255,0.15)'
+            }}>
+              {[
+                { value: '10,000+', label: 'Students Enrolled' },
+                { value: '14+', label: 'Partner Universities' },
+                { value: '500+', label: 'Programs Available' },
+                { value: '10+', label: 'Years of Excellence' },
+              ].map((s, i) => (
+                <div key={i} style={{
+                  padding: '1.5rem', textAlign: 'center',
+                  background: 'rgba(255,255,255,0.06)',
+                  borderRight: i < 3 ? '1px solid rgba(255,255,255,0.1)' : 'none'
+                }}>
+                  <div style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 900, color: '#fff' }}>{s.value}</div>
+                  <div style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', marginTop: '4px' }}>{s.label}</div>
+                </div>
+              ))}
+            </div>
+          </AnimateOnScroll>
+        </div>
+
+        <style>{`
+          @media (max-width: 900px) {
+            .hero-grid { grid-template-columns: 1fr !important; }
+          }
+        `}</style>
+      </section>
+
+      {/* -- WHY CHOOSE CDRC -- */}
+      <section style={{ padding: '5rem 2rem', background: '#fff' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+            <AnimateOnScroll animation="fadeUp">
+              <span style={{ background: '#EFF6FF', color: '#0051ba', padding: '6px 18px', borderRadius: '50px', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Why Choose Us</span>
+              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, color: '#0f172a', marginTop: '1rem', marginBottom: '0.75rem' }}>
+                Why Choose <span style={{ color: '#0051ba' }}>CDRC?</span>
+              </h2>
+              <p style={{ color: '#64748b', fontSize: '1.05rem', maxWidth: '500px', margin: '0 auto' }}>
+                Six compelling reasons that make us your ideal education partner
+              </p>
+            </AnimateOnScroll>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '1.5rem' }}>
+            {features.map((f, i) => (
+              <AnimateOnScroll key={i} animation="fadeUp" delay={i * 80}>
+                <div style={{
+                  background: '#fff', borderRadius: '16px', padding: '2rem',
+                  border: '1px solid #e2e8f0', transition: 'all 0.3s',
+                  display: 'flex', gap: '1.25rem', alignItems: 'flex-start'
+                }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = '0 12px 32px rgba(0,81,186,0.12)'; e.currentTarget.style.borderColor = '#0051ba'; e.currentTarget.style.transform = 'translateY(-4px)'; }}
+                onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.transform = 'translateY(0)'; }}>
+                  <div style={{ width: '52px', height: '52px', background: '#EFF6FF', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, color: '#0051ba' }}>
+                    {f.icon}
+                  </div>
+                  <div>
+                    <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.5rem' }}>{f.title}</h3>
+                    <p style={{ color: '#64748b', fontSize: '0.92rem', lineHeight: 1.6, margin: 0 }}>{f.desc}</p>
+                  </div>
+                </div>
+              </AnimateOnScroll>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* -- ABOUT TEASER -- */}
+      <section style={{ padding: '5rem 2rem', background: '#f8fafc' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <div className="about-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
+            <AnimateOnScroll animation="slideRight">
+              <div style={{ position: 'relative', height: '380px' }}>
+                <div style={{ position: 'absolute', top: '60px', left: 0, width: '260px', height: '260px', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 12px 30px rgba(0,0,0,0.1)', zIndex: 1, backgroundImage: 'url(https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                <div style={{ position: 'absolute', top: 0, left: '140px', width: '260px', height: '260px', borderRadius: '20px', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.18)', zIndex: 2, backgroundImage: 'url(https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600&q=80)', backgroundSize: 'cover', backgroundPosition: 'center', border: '5px solid #fff' }} />
+                <div style={{ position: 'absolute', bottom: 0, left: '60px', background: '#0051ba', color: '#fff', borderRadius: '14px', padding: '16px 24px', zIndex: 3, boxShadow: '0 8px 24px rgba(0,81,186,0.35)' }}>
+                  <div style={{ fontSize: '1.8rem', fontWeight: 900 }}>10+</div>
+                  <div style={{ fontSize: '0.85rem', opacity: 0.85 }}>Years of Excellence</div>
+                </div>
+              </div>
+            </AnimateOnScroll>
+
+            <AnimateOnScroll animation="slideLeft">
+              <div>
+                <span style={{ background: '#EFF6FF', color: '#0051ba', padding: '6px 18px', borderRadius: '50px', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>About Us</span>
+                <h2 style={{ fontSize: 'clamp(1.8rem, 3vw, 2.5rem)', fontWeight: 800, color: '#0f172a', lineHeight: 1.2, margin: '1rem 0 1.25rem' }}>
+                  About <span style={{ color: '#0051ba' }}>CDRC</span> – Building Better Educational Experiences
+                </h2>
+                <p style={{ color: '#64748b', lineHeight: 1.8, marginBottom: '1.25rem', fontSize: '1rem' }}>
+                  CDRC is a leading education consultancy based in Kanhangad, Kerala, dedicated to making quality higher education accessible to all. We partner with 14+ UGC-approved, NAAC-accredited universities to offer 500+ online degree and diploma programs.
+                </p>
+                <p style={{ color: '#64748b', lineHeight: 1.8, marginBottom: '2rem', fontSize: '1rem' }}>
+                  Our online degrees are fully equivalent to traditional degrees and are valid for government jobs, higher studies, and private sector employment across India and internationally.
+                </p>
+                <Link href="/about" style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '8px',
+                  background: '#0051ba', color: '#fff',
+                  padding: '14px 28px', borderRadius: '10px',
+                  fontWeight: 700, fontSize: '1rem', textDecoration: 'none',
+                  boxShadow: '0 6px 20px rgba(0,81,186,0.3)', transition: 'all 0.3s'
+                }}
+                onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 10px 28px rgba(0,81,186,0.4)'; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 6px 20px rgba(0,81,186,0.3)'; }}>
+                  Learn More ?
+                </Link>
+              </div>
+            </AnimateOnScroll>
+          </div>
+        </div>
+        <style>{`.about-grid { @media (max-width: 768px) { grid-template-columns: 1fr !important; } }`}</style>
+      </section>
+
+      {/* -- ADVANTAGES -- */}
+      <section style={{ padding: '5rem 2rem', background: '#fff' }}>
+        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+            <AnimateOnScroll animation="fadeUp">
+              <span style={{ background: '#EFF6FF', color: '#0051ba', padding: '6px 18px', borderRadius: '50px', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Benefits</span>
+              <h2 style={{ fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800, color: '#0f172a', marginTop: '1rem', marginBottom: '0.75rem' }}>
+                Advantages of <span style={{ color: '#0051ba' }}>Online Degree Programs</span>
+              </h2>
+            </AnimateOnScroll>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1.5rem' }}>
+            {advantages.map((a, i) => (
+              <AnimateOnScroll key={i} animation="fadeUp" delay={i * 100}>
+                <div style={{
+                  background: '#f8fafc', borderRadius: '20px', padding: '2rem',
+                  border: '1px solid #e2e8f0', transition: 'all 0.3s', height: '100%'
+                }}
+                onMouseEnter={e => { e.currentTarget.style.background = '#EFF6FF'; e.currentTarget.style.borderColor = '#0051ba'; e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = '0 16px 40px rgba(0,81,186,0.12)'; }}
+                onMouseLeave={e => { e.currentTarget.style.background = '#f8fafc'; e.currentTarget.style.borderColor = '#e2e8f0'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
+                  <div style={{ width: '56px', height: '56px', background: '#EFF6FF', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem', color: '#0051ba' }}>
+                    {a.icon}
+                  </div>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0f172a', marginBottom: '0.75rem' }}>{a.title}</h3>
+                  <p style={{ color: '#64748b', fontSize: '0.92rem', lineHeight: 1.7, margin: 0 }}>{a.desc}</p>
+                </div>
+              </AnimateOnScroll>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* -- CTA -- */}
+      <section style={{
+        padding: '5rem 2rem',
+        background: 'linear-gradient(135deg, #0051ba 0%, #003d8f 100%)',
+        textAlign: 'center'
+      }}>
+        <div style={{ maxWidth: 700, margin: '0 auto' }}>
+          <AnimateOnScroll animation="fadeUp">
+            <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: '#fff', marginBottom: '1.25rem', lineHeight: 1.2 }}>
+              Ready to Start Your Journey?
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.82)', fontSize: '1.1rem', marginBottom: '2.5rem', lineHeight: 1.7 }}>
+              Join 10,000+ students who have transformed their careers with CDRC. Get free counseling today.
+            </p>
+            <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Link href="/contact" style={{
+                background: '#fff', color: '#0051ba',
+                padding: '16px 36px', borderRadius: '10px',
+                fontWeight: 700, fontSize: '1.05rem', textDecoration: 'none',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.2)', transition: 'all 0.3s'
+              }}
+              onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
+              onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; }}>
+                Free Consultation
+              </Link>
+              <Link href="/programs" style={{
+                background: 'rgba(255,255,255,0.12)', color: '#fff',
+                padding: '16px 36px', borderRadius: '10px',
+                fontWeight: 700, fontSize: '1.05rem', textDecoration: 'none',
+                border: '2px solid rgba(255,255,255,0.3)', transition: 'all 0.3s'
+              }}
+              onMouseEnter={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.2)'; }}
+              onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.12)'; }}>
+                Browse Programs
+              </Link>
+            </div>
+          </AnimateOnScroll>
+        </div>
+      </section>
+
+    </div>
+  );
+}
+
