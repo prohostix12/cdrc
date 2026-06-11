@@ -176,9 +176,9 @@ export default function AptitudeTest() {
         .apt-option.selected { border-color: #7c3aed !important; background: rgba(124,58,237,0.12) !important; }
       `}</style>
 
-      {/* Floating button — stacked above CourseFinder on bottom-right */}
+      {/* Floating button — bottom-left, opposite to CourseFinder */}
       {phase === 'idle' && (
-        <div style={{ position: 'fixed', bottom: '5.5rem', right: '1.5rem', zIndex: 9990 }}>
+        <div style={{ position: 'fixed', bottom: '1.5rem', left: '1.5rem', zIndex: 9990 }}>
           {/* Pulse ring */}
           <div style={{
             position: 'absolute', inset: 0, borderRadius: '50px',
