@@ -2,11 +2,11 @@
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import Chatbot from '@/components/Chatbot';
 import ScrollTop from '@/components/ScrollTop';
 import { usePathname } from 'next/navigation';
 
 import CourseFinder from '@/components/CourseFinder';
+import AptitudeTest from '@/components/AptitudeTest';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -30,9 +30,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {children}
             </main>
             <Footer />
-            <Chatbot />
             <ScrollTop />
             <CourseFinder />
+            <AptitudeTest />
           </>
         )}
       </body>

@@ -17,6 +17,7 @@ const menuItems = [
   { icon: <Mail size={22} />, label: 'Contact Messages', href: '/admin/contacts' },
   { icon: <Globe size={22} />, label: 'SEO Settings', href: '/admin/seo' },
   { icon: <Users size={22} />, label: 'Leads', href: '/admin/leads' },
+  { icon: <BookOpen size={22} />, label: 'Aptitude Results', href: '/admin/aptitude' },
 ];
 
 export default function AdminLayout({ children }: { children: any }) {

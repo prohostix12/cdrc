@@ -176,6 +176,13 @@ export default function Navbar() {
                 Find My Course
               </button>
               <button
+                className={`btn-find ${scrolled ? 'btn-find-dark' : 'btn-find-light'}`}
+                onClick={() => window.dispatchEvent(new Event('openAptitudeTest'))}
+                style={scrolled ? { background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', boxShadow: '0 2px 10px rgba(124,58,237,0.3)' } : {}}
+              >
+                🎓 Career Test
+              </button>
+              <button
                 id="suggest-uni-nav-btn"
                 onClick={() => setSuggestOpen(true)}
                 style={{ padding: '7px 16px', borderRadius: '50px', fontWeight: 500, fontSize: '.83rem', border: scrolled ? '1.5px solid #4361EE' : '1.5px solid rgba(255,255,255,0.35)', cursor: 'pointer', fontFamily: 'inherit', transition: 'all .2s', background: 'transparent', color: scrolled ? '#4361EE' : '#fff', whiteSpace: 'nowrap' }}
@@ -237,6 +244,10 @@ export default function Navbar() {
               <button className="btn-find btn-find-dark" style={{ flex: 1, minWidth: 120 }}
                 onClick={() => { setOpen(false); const btn = document.querySelector('.cf-floating-btn') as HTMLButtonElement; if (btn) btn.click(); }}>
                 Find My Course
+              </button>
+              <button className="btn-find btn-find-dark" style={{ flex: 1, minWidth: 120, background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', boxShadow: '0 2px 10px rgba(124,58,237,0.3)' }}
+                onClick={() => { setOpen(false); window.dispatchEvent(new Event('openAptitudeTest')); }}>
+                🎓 Career Test
               </button>
               <button onClick={() => { setOpen(false); setSuggestOpen(true); }}
                 style={{ flex: 1, minWidth: 120, padding: '7px 12px', borderRadius: '50px', fontWeight: 500, fontSize: '.83rem', border: '1.5px solid #4361EE', cursor: 'pointer', fontFamily: 'inherit', background: 'transparent', color: '#4361EE' }}>
