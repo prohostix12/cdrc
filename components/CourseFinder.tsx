@@ -668,7 +668,7 @@ export default function CourseFinder() {
 
 const CF_STYLES = `
 .cf-floating-btn {
-  position: fixed; bottom: 1.5rem; right: 5.5rem;
+  position: fixed; bottom: 1.5rem; right: 1.5rem;
   background: linear-gradient(135deg, #0051ba 0%, #1a7fe8 100%);
   color: #fff; border: none; border-radius: 50px;
   padding: 16px 26px; font-size: 1rem; font-weight: 600;
@@ -822,7 +822,7 @@ const CF_STYLES = `
 .cf-view-all-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0,81,186,0.3); }
 @media (max-width: 768px) {
   .cf-floating-btn span { display: none; }
-  .cf-floating-btn { padding: 16px; border-radius: 50%; width: 56px; height: 56px; justify-content: center; bottom: 1.5rem; right: 5rem; }
+  .cf-floating-btn { padding: 16px; border-radius: 50%; width: 56px; height: 56px; justify-content: center; bottom: 1.5rem; right: 1rem; }
   .cf-overlay { align-items: center; padding: 16px; }
   .cf-modal { border-radius: 20px; max-height: 92vh; width: 100%; }
   .cf-options-grid { grid-template-columns: 1fr 1fr; gap: 8px; }

@@ -72,19 +72,6 @@ export default function AptitudeTest() {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [result, setResult] = useState<Result | null>(null);
   const [sessionId] = useState(generateSessionId);
-  const [btnPos, setBtnPos] = useState({ bottom: 120, left: 24 });
-
-  // Drift the button gently every few seconds
-  useEffect(() => {
-    if (phase !== 'idle') return;
-    const id = setInterval(() => {
-      setBtnPos(p => ({
-        bottom: Math.max(80, Math.min(200, p.bottom + (Math.random() > 0.5 ? 12 : -12))),
-        left: Math.max(16, Math.min(80, p.left + (Math.random() > 0.5 ? 8 : -8))),
-      }));
-    }, 2500);
-    return () => clearInterval(id);
-  }, [phase]);
 
   const loadQuestions = useCallback(async () => {
     if (questions.length > 0) return;
@@ -189,9 +176,9 @@ export default function AptitudeTest() {
         .apt-option.selected { border-color: #7c3aed !important; background: rgba(124,58,237,0.12) !important; }
       `}</style>
 
-      {/* Floating moving button */}
+      {/* Floating button — stacked above CourseFinder on bottom-right */}
       {phase === 'idle' && (
-        <div style={{ position: 'fixed', bottom: btnPos.bottom, left: btnPos.left, zIndex: 9990, transition: 'bottom 1.2s ease, left 1.2s ease' }}>
+        <div style={{ position: 'fixed', bottom: '5.5rem', right: '1.5rem', zIndex: 9990 }}>
           {/* Pulse ring */}
           <div style={{
             position: 'absolute', inset: 0, borderRadius: '50px',
