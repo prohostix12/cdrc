@@ -1,57 +1,615 @@
 import { NextResponse } from 'next/server';
 import { getDb } from '@/lib/mongodb';
-import { allUniversities, openSchoolData } from '@/lib/data';
 
-export async function POST() {
+export const dynamic = 'force-dynamic';
+
+const UNIVERSITIES = [
+  {
+    name: 'Amity University Online',
+    slug: 'amity-university-online',
+    logoInitial: 'A',
+    accreditation: 'UGC Approved | NAAC A+',
+    naac: 'A+',
+    ranking: 'NAAC A+',
+    location: 'Noida, Uttar Pradesh',
+    city: 'Noida',
+    state: 'Uttar Pradesh',
+    type: 'Private',
+    established: '2005',
+    ugcApproved: true,
+    aicteApproved: true,
+    description: 'Amity University Online offers UGC-entitled online degrees powered by India\'s leading private university. With a strong emphasis on employability, industry mentorship, and global exposure, Amity Online enables students to earn recognised degrees from anywhere.',
+    facilities: ['Digital Library', 'Online Labs', 'Career Support', 'Live Lectures', 'Student Portal', 'Placement Assistance'],
+    highlights: ['UGC-DEB Approved', 'NAAC A+ Accredited', 'QS World Ranked', '1,50,000+ Alumni Network', 'Industry-Aligned Curriculum'],
+    minFee: '80000',
+    maxFee: '250000',
+    website: 'https://amityonline.com',
+    featured: true,
+    active: true,
+  },
+  {
+    name: 'Lovely Professional University (LPU) Online',
+    slug: 'lpu-online',
+    logoInitial: 'L',
+    accreditation: 'UGC Approved | NAAC A++',
+    naac: 'A++',
+    ranking: 'NAAC A++',
+    location: 'Jalandhar, Punjab',
+    city: 'Jalandhar',
+    state: 'Punjab',
+    type: 'Private',
+    established: '2005',
+    ugcApproved: true,
+    aicteApproved: true,
+    description: 'LPU Online is the distance and online learning division of Lovely Professional University, India\'s largest single-campus university. Recognised for academic excellence with NAAC A++ grade, LPU Online offers flexible, affordable programs with world-class digital infrastructure.',
+    facilities: ['E-Library', 'Virtual Classrooms', 'Placement Cell', 'AI-Powered LMS', 'Proctored Exams', 'Mentorship Program'],
+    highlights: ['NAAC A++ Graded', 'UGC-DEB Approved', 'NIRF Ranked', '200+ Recruiters', 'EMI Options Available'],
+    minFee: '40000',
+    maxFee: '200000',
+    website: 'https://online.lpu.in',
+    featured: true,
+    active: true,
+  },
+  {
+    name: 'Manipal University Online (MAHE)',
+    slug: 'manipal-university-online',
+    logoInitial: 'M',
+    accreditation: 'UGC Approved | NAAC A++',
+    naac: 'A++',
+    ranking: 'NAAC A++',
+    location: 'Manipal, Karnataka',
+    city: 'Manipal',
+    state: 'Karnataka',
+    type: 'Deemed',
+    established: '1953',
+    ugcApproved: true,
+    aicteApproved: true,
+    description: 'Manipal Academy of Higher Education (MAHE) is a premier Deemed-to-be University offering online programs through Manipal University Online. With 70+ years of academic heritage and global recognition, it delivers high-quality education through an advanced learning platform.',
+    facilities: ['Digital Library', 'Industry Webinars', 'Career Services', 'Discussion Forums', 'Recorded Lectures', 'Online Assessments'],
+    highlights: ['NAAC A++ Accredited', 'QS 5-Star Rated', 'UGC-DEB Approved', '70+ Years Legacy', 'International Recognition'],
+    minFee: '80000',
+    maxFee: '300000',
+    website: 'https://manipal.edu',
+    featured: true,
+    active: true,
+  },
+  {
+    name: 'Jain University Online',
+    slug: 'jain-university-online',
+    logoInitial: 'J',
+    accreditation: 'UGC Approved | NAAC A++',
+    naac: 'A++',
+    ranking: 'NAAC A++',
+    location: 'Bangalore, Karnataka',
+    city: 'Bangalore',
+    state: 'Karnataka',
+    type: 'Deemed',
+    established: '1990',
+    ugcApproved: true,
+    aicteApproved: true,
+    description: 'Jain (Deemed-to-be University) Online offers flexible learning programs for working professionals and students. Based in Bangalore, India\'s tech capital, Jain Online combines academic rigour with industry relevance to prepare future-ready graduates.',
+    facilities: ['Smart LMS', 'Virtual Labs', 'E-Resources', 'Placement Portal', 'Live Sessions', 'Alumni Network'],
+    highlights: ['NAAC A++ Graded', 'UGC-DEB Approved', 'NIRF Top 100', 'Bangalore-Based', 'Strong Industry Ties'],
+    minFee: '60000',
+    maxFee: '220000',
+    website: 'https://online.jainuniversity.ac.in',
+    featured: true,
+    active: true,
+  },
+  {
+    name: 'Chandigarh University Online',
+    slug: 'chandigarh-university-online',
+    logoInitial: 'C',
+    accreditation: 'UGC Approved | NAAC A+',
+    naac: 'A+',
+    ranking: 'NAAC A+',
+    location: 'Mohali, Punjab',
+    city: 'Mohali',
+    state: 'Punjab',
+    type: 'Private',
+    established: '2012',
+    ugcApproved: true,
+    aicteApproved: true,
+    description: 'Chandigarh University Online is the online learning wing of Chandigarh University, one of India\'s fastest-growing private universities. With NAAC A+ accreditation and strong placement records, CU Online provides job-oriented programs at affordable fees.',
+    facilities: ['Learning Portal', 'Digital Library', 'Career Counselling', 'Recorded Content', 'Online Exams', 'Student Support'],
+    highlights: ['NAAC A+ Accredited', 'UGC-DEB Approved', 'NIRF Ranked', '95%+ Placement Record', 'Affordable Fees'],
+    minFee: '40000',
+    maxFee: '180000',
+    website: 'https://online.cuchd.in',
+    featured: false,
+    active: true,
+  },
+  {
+    name: 'DY Patil University Online',
+    slug: 'dy-patil-university-online',
+    logoInitial: 'D',
+    accreditation: 'UGC Approved | NAAC A++',
+    naac: 'A++',
+    ranking: 'NAAC A++',
+    location: 'Navi Mumbai, Maharashtra',
+    city: 'Navi Mumbai',
+    state: 'Maharashtra',
+    type: 'Deemed',
+    established: '2003',
+    ugcApproved: true,
+    aicteApproved: false,
+    description: 'DY Patil University Online delivers quality distance education backed by the DY Patil Group\'s legacy in healthcare and education. With NAAC A++ grading, it offers industry-aligned programs with a focus on practical learning and career advancement.',
+    facilities: ['Online LMS', 'Virtual Library', 'Placement Support', 'Webinars', 'Discussion Forums', 'Mentoring'],
+    highlights: ['NAAC A++ Graded', 'UGC-DEB Approved', 'Strong Alumni Base', 'Industry Partnerships', 'Flexible Schedules'],
+    minFee: '70000',
+    maxFee: '200000',
+    website: 'https://dypatil.edu',
+    featured: false,
+    active: true,
+  },
+  {
+    name: 'Shoolini University Online',
+    slug: 'shoolini-university-online',
+    logoInitial: 'S',
+    accreditation: 'UGC Approved | NAAC A+',
+    naac: 'A+',
+    ranking: 'NAAC A+',
+    location: 'Solan, Himachal Pradesh',
+    city: 'Solan',
+    state: 'Himachal Pradesh',
+    type: 'Private',
+    established: '2009',
+    ugcApproved: true,
+    aicteApproved: false,
+    description: 'Shoolini University is a research-driven institution offering online programs that blend academic depth with professional skills. Ranked among top private universities in India, Shoolini Online focuses on innovation and entrepreneurship.',
+    facilities: ['Smart LMS', 'Digital Resources', 'Placement Cell', 'Live Classes', 'Project-Based Learning'],
+    highlights: ['NAAC A+ Accredited', 'UGC Approved', 'Research-Focused', 'Patent Leader', 'Industry Collaborations'],
+    minFee: '50000',
+    maxFee: '180000',
+    website: 'https://shooliniuniversity.com',
+    featured: false,
+    active: true,
+  },
+  {
+    name: 'UPES Online',
+    slug: 'upes-online',
+    logoInitial: 'U',
+    accreditation: 'UGC Approved | NAAC A',
+    naac: 'A',
+    ranking: 'NAAC A',
+    location: 'Dehradun, Uttarakhand',
+    city: 'Dehradun',
+    state: 'Uttarakhand',
+    type: 'Private',
+    established: '2003',
+    ugcApproved: true,
+    aicteApproved: true,
+    description: 'University of Petroleum and Energy Studies (UPES) Online offers specialised programs in energy, technology, and management. Known for domain expertise and strong industry linkages, UPES Online prepares students for niche career opportunities.',
+    facilities: ['Industry-Ready Curriculum', 'Online Labs', 'Placement Support', 'Guest Lectures', 'Digital Library'],
+    highlights: ['NAAC A Accredited', 'UGC-DEB Approved', 'Domain Expertise', 'High Placements', 'Industry Connect'],
+    minFee: '70000',
+    maxFee: '250000',
+    website: 'https://online.upes.ac.in',
+    featured: false,
+    active: true,
+  },
+  {
+    name: 'Sikkim Manipal University Online',
+    slug: 'sikkim-manipal-university-online',
+    logoInitial: 'S',
+    accreditation: 'UGC Approved | NAAC A+',
+    naac: 'A+',
+    ranking: 'NAAC A+',
+    location: 'Gangtok, Sikkim',
+    city: 'Gangtok',
+    state: 'Sikkim',
+    type: 'Private',
+    established: '1995',
+    ugcApproved: true,
+    aicteApproved: true,
+    description: 'Sikkim Manipal University (SMU) Online is a pioneer in distance education in India. Part of the Manipal Education Group, SMU offers well-structured online programs with a strong academic framework and comprehensive student support services.',
+    facilities: ['E-Learning Platform', 'Virtual Classrooms', 'Student Support Center', 'Placement Assistance', 'Digital Library'],
+    highlights: ['NAAC A+ Graded', 'UGC-DEB Approved', 'Pioneer in Online Education', 'Pan-India Learning Centres', 'Manipal Group Legacy'],
+    minFee: '40000',
+    maxFee: '150000',
+    website: 'https://smude.edu.in',
+    featured: false,
+    active: true,
+  },
+  {
+    name: 'Sharda University Online',
+    slug: 'sharda-university-online',
+    logoInitial: 'S',
+    accreditation: 'UGC Approved | NAAC A+',
+    naac: 'A+',
+    ranking: 'NAAC A+',
+    location: 'Greater Noida, Uttar Pradesh',
+    city: 'Greater Noida',
+    state: 'Uttar Pradesh',
+    type: 'Private',
+    established: '2009',
+    ugcApproved: true,
+    aicteApproved: true,
+    description: 'Sharda University Online extends the academic excellence of Sharda University to learners across India. With a diverse student community and comprehensive digital infrastructure, Sharda Online delivers quality education for career advancement.',
+    facilities: ['LMS Platform', 'E-Library', 'Career Guidance', 'Webinars', 'Online Assessments', 'Student Forum'],
+    highlights: ['NAAC A+ Accredited', 'UGC-DEB Approved', 'Multi-Disciplinary', 'Global Campus', 'Affordable Programs'],
+    minFee: '40000',
+    maxFee: '170000',
+    website: 'https://online.sharda.ac.in',
+    featured: false,
+    active: true,
+  },
+  {
+    name: 'Vignan University Online',
+    slug: 'vignan-university-online',
+    logoInitial: 'V',
+    accreditation: 'UGC Approved | NAAC A+',
+    naac: 'A+',
+    ranking: 'NAAC A+',
+    location: 'Guntur, Andhra Pradesh',
+    city: 'Guntur',
+    state: 'Andhra Pradesh',
+    type: 'Deemed',
+    established: '1997',
+    ugcApproved: true,
+    aicteApproved: true,
+    description: 'Vignan\'s Foundation for Science, Technology and Research offers online programs with a focus on technical and management education. With NAAC A+ accreditation and strong research output, Vignan Online provides quality distance learning.',
+    facilities: ['Digital Classroom', 'E-Resources', 'Placement Portal', 'Live Sessions', 'Student Dashboard'],
+    highlights: ['NAAC A+ Accredited', 'UGC-DEB Approved', 'Strong Technical Focus', 'Research Excellence', 'Affordable Fees'],
+    minFee: '35000',
+    maxFee: '150000',
+    website: 'https://vignan.ac.in',
+    featured: false,
+    active: true,
+  },
+  {
+    name: 'Suresh Gyan Vihar University Online',
+    slug: 'suresh-gyan-vihar-university-online',
+    logoInitial: 'G',
+    accreditation: 'UGC Approved | NAAC A',
+    naac: 'A',
+    ranking: 'NAAC A',
+    location: 'Jaipur, Rajasthan',
+    city: 'Jaipur',
+    state: 'Rajasthan',
+    type: 'Private',
+    established: '2008',
+    ugcApproved: true,
+    aicteApproved: false,
+    description: 'Suresh Gyan Vihar University Online offers affordable, UGC-approved distance learning programs from Jaipur. It focuses on accessible education with a practical curriculum designed for students and working professionals.',
+    facilities: ['Online Portal', 'Digital Library', 'Exam Support', 'Career Counselling', 'Recorded Lectures'],
+    highlights: ['NAAC A Accredited', 'UGC-DEB Approved', 'Affordable Programs', 'Flexible Learning', 'Pan-India Reach'],
+    minFee: '25000',
+    maxFee: '120000',
+    website: 'https://gyanvihar.org',
+    featured: false,
+    active: true,
+  },
+  {
+    name: 'Uttaranchal University Online',
+    slug: 'uttaranchal-university-online',
+    logoInitial: 'U',
+    accreditation: 'UGC Approved | NAAC A',
+    naac: 'A',
+    ranking: 'NAAC A',
+    location: 'Dehradun, Uttarakhand',
+    city: 'Dehradun',
+    state: 'Uttarakhand',
+    type: 'Private',
+    established: '2002',
+    ugcApproved: true,
+    aicteApproved: false,
+    description: 'Uttaranchal University Online provides flexible online education from the foothills of the Himalayas. With NAAC A accreditation and a focus on holistic development, it offers industry-relevant programs at budget-friendly fees.',
+    facilities: ['LMS', 'E-Library', 'Placement Cell', 'Online Support', 'Webinars'],
+    highlights: ['NAAC A Accredited', 'UGC Approved', 'Scenic Campus', 'Budget-Friendly', 'Growing Alumni Network'],
+    minFee: '25000',
+    maxFee: '100000',
+    website: 'https://uttaranchaluniversity.ac.in',
+    featured: false,
+    active: true,
+  },
+  {
+    name: 'Mangalayatan University Online',
+    slug: 'mangalayatan-university-online',
+    logoInitial: 'M',
+    accreditation: 'UGC Approved | NAAC B++',
+    naac: 'B++',
+    ranking: 'NAAC B++',
+    location: 'Aligarh, Uttar Pradesh',
+    city: 'Aligarh',
+    state: 'Uttar Pradesh',
+    type: 'Private',
+    established: '2006',
+    ugcApproved: true,
+    aicteApproved: false,
+    description: 'Mangalayatan University Online provides affordable and accessible distance education from Aligarh. Recognised by UGC-DEB, it caters to students seeking quality education at the most competitive fees in India.',
+    facilities: ['Online Portal', 'Study Material', 'Exam Centres', 'Student Support', 'Placement Guidance'],
+    highlights: ['UGC-DEB Approved', 'Most Affordable Fees', 'Flexible Schedule', 'Wide Program Range', 'Pan-India Centres'],
+    minFee: '18000',
+    maxFee: '80000',
+    website: 'https://mangalayatan.in',
+    featured: false,
+    active: true,
+  },
+  {
+    name: 'Dr. D.Y. Patil Vidyapeeth Online',
+    slug: 'dy-patil-vidyapeeth-online',
+    logoInitial: 'D',
+    accreditation: 'UGC Approved | NAAC A++',
+    naac: 'A++',
+    ranking: 'NAAC A++',
+    location: 'Pune, Maharashtra',
+    city: 'Pune',
+    state: 'Maharashtra',
+    type: 'Deemed',
+    established: '2003',
+    ugcApproved: true,
+    aicteApproved: false,
+    description: 'Dr. D.Y. Patil Vidyapeeth (Pune) Online is a premier deemed university offering online programs with a strong focus on healthcare, management, and technology. It is distinguished by NAAC A++ accreditation and a culture of academic excellence.',
+    facilities: ['Advanced LMS', 'Research Portal', 'Career Services', 'Industry Mentors', 'Digital Resources', 'Alumni Connect'],
+    highlights: ['NAAC A++ Graded', 'UGC-DEB Approved', 'Pune Education Hub', 'Healthcare Expertise', 'Industry-Led Programs'],
+    minFee: '60000',
+    maxFee: '220000',
+    website: 'https://dypatilvidyapeeth.edu.in',
+    featured: false,
+    active: true,
+  },
+];
+
+interface ProgramTemplate {
+  name: string;
+  category: string;
+  courseType: string;
+  level: string;
+  qualification: string;
+  duration: string;
+  mode: string;
+  eligibility: string;
+  description: string;
+  specializations: string[];
+  careerOptions: string[];
+  highlights: string[];
+  syllabus: string[];
+}
+
+const PROGRAM_TEMPLATES: Record<string, ProgramTemplate> = {
+  MBA: {
+    name: 'Master of Business Administration (MBA)',
+    category: 'MBA',
+    courseType: 'Management',
+    level: 'Postgraduate',
+    qualification: 'Graduate',
+    duration: '2 Years',
+    mode: 'Online',
+    eligibility: "Bachelor's degree in any discipline with minimum 50% aggregate from a recognised university",
+    description: 'The Online MBA program is designed to develop leadership, strategic thinking, and business management skills. With industry-relevant specialisations and flexible learning, this program empowers working professionals and fresh graduates to advance their careers.',
+    specializations: ['Finance', 'Marketing', 'Human Resource Management', 'Information Technology', 'Operations Management', 'International Business', 'Business Analytics', 'Healthcare Management'],
+    careerOptions: ['Business Manager', 'Marketing Director', 'Financial Analyst', 'HR Manager', 'Operations Head', 'Management Consultant', 'Entrepreneur'],
+    highlights: ['UGC-DEB Approved Degree', 'Industry-Aligned Curriculum', 'Live Expert Sessions', 'Placement Assistance', 'EMI Options'],
+    syllabus: ['Management Principles', 'Financial Accounting', 'Marketing Management', 'Organisational Behaviour', 'Business Economics', 'Strategic Management', 'Business Analytics', 'Leadership & Ethics'],
+  },
+  MCA: {
+    name: 'Master of Computer Applications (MCA)',
+    category: 'MCA',
+    courseType: 'Technology',
+    level: 'Postgraduate',
+    qualification: 'Graduate',
+    duration: '2 Years',
+    mode: 'Online',
+    eligibility: "Bachelor's degree with Mathematics/Statistics at 10+2 or graduation level with minimum 50% aggregate",
+    description: 'The Online MCA program builds advanced computing and software development skills. Covering AI, cloud computing, data science, and full-stack development, this program prepares graduates for top IT careers.',
+    specializations: ['Data Science', 'Artificial Intelligence', 'Cloud Computing', 'Cyber Security', 'Full Stack Development', 'Machine Learning'],
+    careerOptions: ['Software Developer', 'Data Scientist', 'Cloud Architect', 'Cyber Security Analyst', 'System Administrator', 'IT Project Manager', 'AI Engineer'],
+    highlights: ['UGC-DEB Approved', 'Hands-On Projects', 'Industry Certifications', 'Placement Support', 'Cutting-Edge Curriculum'],
+    syllabus: ['Data Structures & Algorithms', 'Database Management Systems', 'Software Engineering', 'Web Technologies', 'Computer Networks', 'Artificial Intelligence', 'Cloud Computing', 'Cyber Security'],
+  },
+  BBA: {
+    name: 'Bachelor of Business Administration (BBA)',
+    category: 'BBA',
+    courseType: 'Management',
+    level: 'Undergraduate',
+    qualification: '12th Pass',
+    duration: '3 Years',
+    mode: 'Online',
+    eligibility: '10+2 or equivalent from a recognised board with minimum 50% aggregate',
+    description: 'The Online BBA program provides a strong foundation in business management, entrepreneurship, and leadership. Ideal for students who want to enter the corporate world or start their own ventures after 12th.',
+    specializations: ['Marketing', 'Finance', 'Human Resource Management', 'International Business', 'Digital Marketing', 'Logistics & Supply Chain'],
+    careerOptions: ['Business Development Executive', 'Marketing Analyst', 'HR Coordinator', 'Sales Manager', 'Operations Executive', 'Entrepreneur'],
+    highlights: ['UGC Approved', 'Foundation for MBA', 'Industry Projects', 'Placement Assistance', 'Affordable Fees'],
+    syllabus: ['Principles of Management', 'Business Communication', 'Financial Accounting', 'Marketing Fundamentals', 'Business Law', 'Entrepreneurship', 'Digital Marketing', 'Business Ethics'],
+  },
+  BCA: {
+    name: 'Bachelor of Computer Applications (BCA)',
+    category: 'BCA',
+    courseType: 'Technology',
+    level: 'Undergraduate',
+    qualification: '12th Pass',
+    duration: '3 Years',
+    mode: 'Online',
+    eligibility: '10+2 or equivalent with Mathematics from a recognised board with minimum 50% aggregate',
+    description: 'The Online BCA program equips students with core computer science skills including programming, web development, and database management. It serves as a pathway to IT careers and further studies like MCA.',
+    specializations: ['Web Development', 'Mobile App Development', 'Data Science', 'Cloud Computing', 'Cyber Security'],
+    careerOptions: ['Software Developer', 'Web Developer', 'System Analyst', 'Database Administrator', 'Network Engineer', 'IT Support Specialist'],
+    highlights: ['UGC Approved', 'Programming-Focused', 'Project-Based Learning', 'Gateway to MCA', 'Industry-Ready Skills'],
+    syllabus: ['Programming in C/C++', 'Data Structures', 'Database Management', 'Web Technologies', 'Operating Systems', 'Computer Networks', 'Python Programming', 'Software Engineering'],
+  },
+  BCOM: {
+    name: 'Bachelor of Commerce (B.Com)',
+    category: 'B.Com',
+    courseType: 'Commerce',
+    level: 'Undergraduate',
+    qualification: '12th Pass',
+    duration: '3 Years',
+    mode: 'Online',
+    eligibility: '10+2 or equivalent from a recognised board with minimum 50% aggregate',
+    description: 'The Online B.Com program offers a comprehensive understanding of commerce, accounting, taxation, and finance. It prepares students for careers in banking, finance, accounting, and business.',
+    specializations: ['Accounting & Finance', 'Banking & Insurance', 'Taxation', 'International Trade', 'Financial Markets'],
+    careerOptions: ['Accountant', 'Tax Consultant', 'Financial Advisor', 'Bank Officer', 'Auditor', 'Business Analyst'],
+    highlights: ['UGC Approved', 'CA/CS Foundation', 'Practical Accounting', 'Placement Support', 'Affordable'],
+    syllabus: ['Financial Accounting', 'Business Mathematics', 'Business Law', 'Cost Accounting', 'Taxation', 'Corporate Accounting', 'Auditing', 'Business Economics'],
+  },
+  MCOM: {
+    name: 'Master of Commerce (M.Com)',
+    category: 'M.Com',
+    courseType: 'Commerce',
+    level: 'Postgraduate',
+    qualification: 'Graduate',
+    duration: '2 Years',
+    mode: 'Online',
+    eligibility: "B.Com or equivalent Bachelor's degree with minimum 50% aggregate from a recognised university",
+    description: 'The Online M.Com program deepens knowledge in advanced accounting, finance, and business strategy. Ideal for B.Com graduates seeking specialisation in commerce and finance domains.',
+    specializations: ['Accounting & Finance', 'Banking & Financial Services', 'International Finance', 'Taxation'],
+    careerOptions: ['Senior Accountant', 'Finance Manager', 'Tax Consultant', 'Banking Professional', 'University Lecturer', 'CFO'],
+    highlights: ['UGC Approved', 'Advanced Commerce', 'Research Opportunities', 'Career Advancement', 'Flexible Schedule'],
+    syllabus: ['Advanced Accounting', 'Managerial Economics', 'Corporate Finance', 'Research Methodology', 'International Business', 'Financial Management', 'Tax Planning', 'E-Commerce'],
+  },
+  BSC: {
+    name: 'Bachelor of Science (B.Sc)',
+    category: 'B.Sc',
+    courseType: 'Science',
+    level: 'Undergraduate',
+    qualification: '12th Pass',
+    duration: '3 Years',
+    mode: 'Online',
+    eligibility: '10+2 with Science stream from a recognised board with minimum 50% aggregate',
+    description: 'The Online B.Sc program offers foundational knowledge in science, data analytics, and IT. It builds analytical and research skills for careers in technology, data science, and scientific research.',
+    specializations: ['Data Science', 'Information Technology', 'Mathematics', 'Statistics', 'Computer Science'],
+    careerOptions: ['Data Analyst', 'Research Associate', 'IT Specialist', 'Lab Technician', 'Science Educator', 'Statistician'],
+    highlights: ['UGC Approved', 'Science Foundation', 'Research Focus', 'Industry Projects', 'Pathway to M.Sc'],
+    syllabus: ['Mathematics', 'Statistics', 'Computer Science', 'Data Analytics', 'Physics', 'Environmental Science', 'Research Methods', 'Programming'],
+  },
+  MSC: {
+    name: 'Master of Science (M.Sc)',
+    category: 'M.Sc',
+    courseType: 'Science',
+    level: 'Postgraduate',
+    qualification: 'Graduate',
+    duration: '2 Years',
+    mode: 'Online',
+    eligibility: "B.Sc or equivalent Bachelor's degree with minimum 50% aggregate from a recognised university",
+    description: 'The Online M.Sc program offers advanced specialisation in data science, mathematics, and IT. It combines theoretical depth with practical application for careers in research, analytics, and technology.',
+    specializations: ['Data Science', 'Mathematics', 'Computer Science', 'Information Technology', 'Statistics'],
+    careerOptions: ['Data Scientist', 'Machine Learning Engineer', 'Research Scientist', 'Statistician', 'IT Manager', 'Analytics Consultant'],
+    highlights: ['UGC Approved', 'Advanced Science', 'Research-Intensive', 'Industry Projects', 'Career Growth'],
+    syllabus: ['Advanced Mathematics', 'Machine Learning', 'Statistical Analysis', 'Data Mining', 'Research Methodology', 'Big Data Analytics', 'Deep Learning', 'Data Visualisation'],
+  },
+  BA: {
+    name: 'Bachelor of Arts (BA)',
+    category: 'BA',
+    courseType: 'Arts',
+    level: 'Undergraduate',
+    qualification: '12th Pass',
+    duration: '3 Years',
+    mode: 'Online',
+    eligibility: '10+2 or equivalent from a recognised board with minimum 45% aggregate',
+    description: 'The Online BA program develops critical thinking, communication, and analytical skills across humanities and social sciences. It offers a broad liberal arts education suitable for diverse career paths.',
+    specializations: ['English', 'Political Science', 'Psychology', 'Sociology', 'Economics', 'History'],
+    careerOptions: ['Content Writer', 'Journalist', 'Social Worker', 'Government Officer', 'Teacher', 'Public Relations Executive'],
+    highlights: ['UGC Approved', 'Liberal Arts', 'Communication Skills', 'UPSC Foundation', 'Flexible Learning'],
+    syllabus: ['English Literature', 'Political Science', 'Psychology', 'Sociology', 'Economics', 'History', 'Philosophy', 'Communication Skills'],
+  },
+  MA: {
+    name: 'Master of Arts (MA)',
+    category: 'MA',
+    courseType: 'Arts',
+    level: 'Postgraduate',
+    qualification: 'Graduate',
+    duration: '2 Years',
+    mode: 'Online',
+    eligibility: "Bachelor's degree in any discipline with minimum 50% aggregate from a recognised university",
+    description: 'The Online MA program offers advanced study in humanities, social sciences, and public policy. Ideal for those pursuing careers in academia, government services, media, and social development.',
+    specializations: ['English', 'Political Science', 'Psychology', 'Sociology', 'Economics', 'Public Administration'],
+    careerOptions: ['University Lecturer', 'Research Analyst', 'Policy Advisor', 'Psychologist', 'Journalist', 'Government Officer'],
+    highlights: ['UGC Approved', 'Advanced Humanities', 'Research Skills', 'Competitive Exam Prep', 'Academic Career Path'],
+    syllabus: ['Advanced Literary Theory', 'Research Methodology', 'Contemporary Issues', 'Public Policy', 'Statistical Analysis', 'Dissertation', 'Comparative Studies', 'Seminar Presentations'],
+  },
+};
+
+const FEE_MAP: Record<string, Record<string, number>> = {
+  'amity-university-online':              { MBA: 200000, MCA: 180000, BBA: 150000, BCA: 140000, BCOM: 120000, MCOM: 100000, BSC: 120000, MSC: 110000, BA: 100000, MA: 90000 },
+  'lpu-online':                           { MBA: 180000, MCA: 160000, BBA: 120000, BCA: 110000, BCOM: 80000, MCOM: 70000, BSC: 90000, MSC: 80000, BA: 60000, MA: 55000 },
+  'manipal-university-online':            { MBA: 280000, MCA: 220000, BBA: 180000, BCA: 160000, BCOM: 140000, MCOM: 120000, BSC: 140000, MSC: 130000 },
+  'jain-university-online':               { MBA: 210000, MCA: 180000, BBA: 150000, BCA: 130000, BCOM: 100000, MCOM: 85000, BSC: 110000, MSC: 100000, BA: 80000, MA: 75000 },
+  'chandigarh-university-online':         { MBA: 170000, MCA: 140000, BBA: 110000, BCA: 100000, BCOM: 70000, MCOM: 60000, BSC: 80000, MSC: 70000, BA: 55000, MA: 50000 },
+  'dy-patil-university-online':           { MBA: 190000, MCA: 170000, BBA: 140000, BCA: 130000, BCOM: 110000, MCOM: 90000 },
+  'shoolini-university-online':           { MBA: 175000, MCA: 150000, BBA: 120000, BCA: 110000, BCOM: 80000, MCOM: 70000, BSC: 90000, MSC: 85000 },
+  'upes-online':                          { MBA: 240000, MCA: 200000, BBA: 160000, BCA: 140000 },
+  'sikkim-manipal-university-online':     { MBA: 140000, MCA: 120000, BBA: 100000, BCA: 90000, BCOM: 60000, MCOM: 55000, BSC: 70000, BA: 50000 },
+  'sharda-university-online':             { MBA: 160000, MCA: 140000, BBA: 110000, BCA: 100000, BCOM: 65000, MCOM: 60000, BSC: 75000, MSC: 70000, BA: 50000, MA: 45000 },
+  'vignan-university-online':             { MBA: 145000, MCA: 130000, BBA: 95000, BCA: 85000, BCOM: 55000, MCOM: 50000, BSC: 65000, MSC: 60000 },
+  'suresh-gyan-vihar-university-online':  { MBA: 110000, MCA: 95000, BBA: 75000, BCA: 65000, BCOM: 45000, MCOM: 40000, BSC: 55000, BA: 35000, MA: 30000 },
+  'uttaranchal-university-online':        { MBA: 100000, MCA: 90000, BBA: 70000, BCA: 60000, BCOM: 40000, MCOM: 38000, BSC: 50000, BA: 30000, MA: 28000 },
+  'mangalayatan-university-online':       { MBA: 80000, MCA: 70000, BBA: 55000, BCA: 48000, BCOM: 30000, MCOM: 28000, BSC: 35000, BA: 22000, MA: 20000 },
+  'dy-patil-vidyapeeth-online':           { MBA: 210000, MCA: 180000, BBA: 150000, BCA: 130000, BCOM: 100000, MCOM: 90000, BSC: 110000 },
+};
+
+export async function GET(request: Request) {
   try {
+    const url = new URL(request.url);
+    const force = url.searchParams.get('force') === 'true';
     const db = await getDb();
 
-    const uniCount = await db.collection('universities').countDocuments();
-    if (uniCount === 0) {
-      const universitiesWithSlugs = allUniversities.map(uni => ({
-        ...uni,
-        slug: uni.slug || uni.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''),
-        location: uni.location || 'India',
-        naac: uni.ranking || uni.accreditation,
-        description: uni.description || `${uni.name} is a UGC-approved university offering quality online degree programs with flexible learning options.`,
-        facilities: uni.facilities?.length ? uni.facilities : ['Online Learning Platform', 'Digital Library', 'Student Support', 'Live Classes', 'Career Guidance'],
-        ranking: uni.ranking || uni.accreditation,
-      }));
-
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await db.collection('universities').insertMany(universitiesWithSlugs as any[]);
-    } else {
-      // Upsert extended fields for existing universities (idempotent update)
-      for (const uni of allUniversities) {
-        const slug = uni.slug || uni.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-        await db.collection('universities').updateOne(
-          { $or: [{ slug }, { name: uni.name }] },
-          {
-            $set: {
-              slug,
-              location: uni.location || 'India',
-              naac: uni.ranking || uni.accreditation,
-              description: uni.description || `${uni.name} is a UGC-approved university offering quality online degree programs.`,
-              facilities: uni.facilities?.length ? uni.facilities : ['Online Learning Platform', 'Digital Library', 'Student Support'],
-              ranking: uni.ranking || uni.accreditation,
-            },
-          }
-        );
+    if (!force) {
+      const existing = await db.collection('universities').countDocuments();
+      if (existing > 0) {
+        return NextResponse.json({
+          message: `Database already has ${existing} universities. Visit /api/seed?force=true to re-seed.`,
+          seeded: false,
+        });
       }
     }
 
-    const boardCount = await db.collection('openSchool').countDocuments();
-    if (boardCount === 0) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await db.collection('openSchool').insertMany(openSchoolData as any[]);
+    if (force) {
+      await db.collection('universities').deleteMany({});
+      await db.collection('programs').deleteMany({});
     }
 
-    return NextResponse.json({
-      success: true,
-      message: `Seeded: ${uniCount === 0 ? allUniversities.length : 0} universities, ${boardCount === 0 ? openSchoolData.length : 0} boards`,
+    // 1. Insert universities
+    const uniDocs = UNIVERSITIES.map(u => ({ ...u, createdAt: new Date() }));
+    const uniResult = await db.collection('universities').insertMany(uniDocs);
+    const insertedIds = Object.values(uniResult.insertedIds) as any[];
+
+    // 2. Build programs linked to universities
+    const programs: any[] = [];
+
+    UNIVERSITIES.forEach((uni, idx) => {
+      const uniId = insertedIds[idx];
+      const fees = FEE_MAP[uni.slug] || {};
+
+      Object.entries(fees).forEach(([cat, fee]) => {
+        const template = PROGRAM_TEMPLATES[cat];
+        if (!template) return;
+
+        programs.push({
+          name: template.name,
+          university: uni.name,
+          universityId: uniId.toString(),
+          category: template.category,
+          courseType: template.courseType,
+          level: template.level,
+          qualification: template.qualification,
+          duration: template.duration,
+          mode: template.mode,
+          fee,
+          feePeriod: 'Total',
+          eligibility: template.eligibility,
+          description: template.description,
+          specializations: template.specializations,
+          careerOptions: template.careerOptions,
+          highlights: template.highlights,
+          syllabus: template.syllabus,
+          featured: uni.featured && ['MBA', 'MCA', 'BBA'].includes(cat),
+          active: true,
+          createdAt: new Date(),
+        });
+      });
     });
-  } catch (err) {
-    console.error('Seed error:', err);
-    return NextResponse.json({ error: String(err) }, { status: 500 });
+
+    await db.collection('programs').insertMany(programs);
+
+    return NextResponse.json({
+      seeded: true,
+      universities: UNIVERSITIES.length,
+      programs: programs.length,
+      message: `Successfully seeded ${UNIVERSITIES.length} universities and ${programs.length} programs.`,
+    });
+  } catch (error) {
+    console.error('Seed error:', error);
+    return NextResponse.json({ error: 'Failed to seed database' }, { status: 500 });
   }
 }
